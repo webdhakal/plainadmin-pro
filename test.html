@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role-Based Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Dashboard!</h1>
+
+    <div id="adminSection" style="display: none;">
+        <h2>Admin Section</h2>
+        <!-- Admin dashboard content -->
+    </div>
+
+    <div id="userSection" style="display: none;">
+        <h2>User Section</h2>
+        <!-- User dashboard content -->
+    </div>
+
+    <script>
+        // Example code to control dashboard elements based on user's role
+        const accessToken = getAccessToken(); // Function to retrieve access token
+console.log(accessToken);
+        function getAccessToken() {
+            // Replace these variables with your actual Auth0 credentials
+            const clientId = '1580058244441785677';
+            const clientSecret = 'RBX-204sR334p0O7I6CYkVZ6HP6W2FTEND1AV7lyxWRP9e0kFpq-xK_TeqRf121O1I7X';
+            // const audience = 'YOUR_AUTH0_API_AUDIENCE';
+            const auth0Domain = 'apis.roblox.com';
+        
+            // Auth0 token endpoint
+            const tokenEndpoint = `https://${auth0Domain}/oauth/v1/token`;
+        
+            // Data to be sent in the request
+            const requestData = {
+                grant_type: 'client_credentials',
+                client_id: clientId,
+                client_secret: clientSecret,
+              //  audience: audience
+            };
+        
+            // Options for the fetch request
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            };
+        
+            // Make a request to Auth0's token endpoint to obtain the access token
+            return fetch(tokenEndpoint, requestOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to obtain access token');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Extract and return the access token from the response
+                    return data.access_token;
+                })
+                .catch(error => {
+                    console.error('Error obtaining access token:', error);
+                    return null;
+                });
+        }
+
+        // Example function to make a request to Roblox API with the access token
+        function makeRequestToRobloxAPI() {
+            // Make request to Roblox API using the access token
+        }
+
+        // Example function to determine user's role based on access token
+        function getUserRole() {
+            // Make a request to Auth0 or your backend to get user's role based on access token
+            // Return user's role (e.g., "admin" or "user")
+        }
+
+        // Example function to display dashboard elements based on user's role
+        function displayDashboardElements() {
+            const userRole = getUserRole();
+            if (userRole === "admin") {
+                document.getElementById("adminSection").style.display = "block";
+            } else if (userRole === "user") {
+                document.getElementById("userSection").style.display = "block";
+            }
+        }
+
+        // Call the function to display dashboard elements based on user's role
+        displayDashboardElements();
+    </script>
+</body>
+</html>

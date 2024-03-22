@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Export Local Storage to File</title>
+</head>
+<body>
+  <button onclick="exportLocalStorageToFile()">Export Local Storage</button>
+
+  <input type="file" id="fileInput">
+  <button onclick="importFromFile()">Import from File</button>
+
+  <script>
+    function exportLocalStorageToFile() {
+      const localStorageData = JSON.stringify(localStorage);
+      const blob = new Blob([localStorageData], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'localStorageData.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function importFromFile() {
+      const fileInput = document.getElementById('fileInput');
+      const file = fileInput.files[0];
+      
+      if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+          const fileContent = event.target.result;
+          try {
+            const data = JSON.parse(fileContent);
+            for (const key in data) {
+              localStorage.setItem(key, data[key]);
+            }
+            alert('Data imported successfully!');
+          } catch (error) {
+            console.error('Error parsing JSON:', error);
+            alert('Error importing data. Please make sure the file contains valid JSON.');
+          }
+        };
+        
+        reader.readAsText(file);
+      } else {
+        alert('Please select a file.');
+      }
+    }
+  </script>
+</body>
+</html>
