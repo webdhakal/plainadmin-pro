@@ -130,4 +130,16 @@
       }
     }
   }
+
+  .no-wrapper {
+    .footer {
+      a {
+        color: $gray-2;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+  }
 }

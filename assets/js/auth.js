@@ -32,6 +32,7 @@ class CustomLocalStorage {
     }
 }
 
+
 class Middleware {
     static authEndpoints = ['dashboard.html', 'profile.html'];
 
@@ -45,23 +46,14 @@ class Middleware {
                 window.location.href = 'signin.html';
             }
         }
-        //  else {
-        //     if (!this.authEndpoints.includes(endpoint)) {
-        //         window.location.href = 'dashboard.html';
-        //     }
-        // }
     }
 }
-
-// redirect to signin if authorized routes are try to access
-Middleware.redirectIfNotAuthenticate();
 
 class Role {
     static removeItemsFromSidebarBasedOnRole(role) {
         var listItems = document.querySelectorAll('.sidebar-nav .nav-item');
-        const existRoles = ['admin', 'projectmanager', 'staff'];
-        const isAdmin = CustomLocalStorage.read('session').role === 'admin' ? true : false;
 
+        const isAdmin = CustomLocalStorage.read('session').role === 'admin' ? true : false;
         if (!isAdmin) {
             listItems.forEach(function (item) {
                 var dataRoles = item.getAttribute('data-roles');
@@ -79,64 +71,35 @@ class Role {
     }
 }
 
-const signUpForm = document.querySelector('#signUpForm')
-if (signUpForm) {
-    document.getElementById('signUpForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent form submission
+// redirect to signin if authorized routes are try to access
+Middleware.redirectIfNotAuthenticate();
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const role = document.getElementById('role').value;
-        var password = document.getElementById('password').value;
-        var password = CryptoJS.AES.encrypt(password, 'secretKey').toString();
+const currentUser = CustomLocalStorage.read('session');
 
-        // Check if the "users" key exists in localStorage
-        let users = CustomLocalStorage.read('users') || [];
-        const existingUser = users.find(user => user.email === email);
-        if (existingUser) {
-            alert('User with this email already exists! Please use a different email.');
-            return;
+window.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('aside')) {
+        loadComponent('sidebar', 'aside');
+    }
+
+    if (document.querySelector('header')) {
+        var headerNewContent = {
+            'sessionUserName': currentUser.name,
+            'sessionUserRole': currentUser.role,
+            'sessionUserEmail': currentUser.email
         }
 
-        const newUser = { name, email, password, role };
-        users.push(newUser);
+        loadComponent('header', 'header', headerNewContent);
+    }
 
-        CustomLocalStorage.create('users', users);
-        console.log('User registered successfully!');
-
-        document.getElementById('signUpForm').reset();
-        window.location.href = 'signin.html';
-    });
-}
-
-const signInForm = document.querySelector('#signInForm')
-if (signInForm) {
-    document.getElementById('signInForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        let users = CustomLocalStorage.read('users') || [];
-        const user = users.find(user => user.email === email);
-        const decryptedPassword = decryptPassword(user.password);
-
-        if (!user) {
-            alert('User not found! Please check your email.');
-            return;
+    if (document.querySelector('footer')) {
+        var footerNewContent = {
+            'developedBy': 'Plain Admin'
         }
 
-        if (decryptedPassword !== password) {
-            alert('Incorrect password! Please try again.');
-            return;
-        }
+        loadComponent('footer', 'footer', footerNewContent);
+    }
 
-        delete user.password;
-        CustomLocalStorage.create('session', user);
-
-        window.location.href = 'dashboard.html';
-    });
-}
+});
 
 function decryptPassword(encryptedPassword) {
     const secretKey = 'secretKey'; // Use the same secret key used for encryption
@@ -148,68 +111,144 @@ function decryptPassword(encryptedPassword) {
     return decryptedPassword;
 }
 
-const signOut = document.getElementById('signOut')
-if (signOut) {
-    signOut.addEventListener('click', (event) => {
-        event.preventDefault();
-        CustomLocalStorage.delete('session');
-        window.location.href = 'index.html';
-    })
-}
+window.onload = function () {
+    // sidebar toggle
+    const sidebarNavWrapper = document.querySelector('.sidebar-nav-wrapper')
+    const mainWrapper = document.querySelector('.main-wrapper')
+    const menuToggleButton = document.querySelector('#menu-toggle')
+    const menuToggleButtonIcon = document.querySelector('#menu-toggle i')
+    const overlay = document.querySelector('.overlay')
 
-// only shows role based sidebar nav items after login
-const currentUser = CustomLocalStorage.read('session');
-Role.removeItemsFromSidebarBasedOnRole(currentUser.role);
+    if (menuToggleButton) {
+        menuToggleButton.addEventListener('click', () => {
+            sidebarNavWrapper.classList.toggle('active')
+            overlay.classList.add('active')
+            mainWrapper.classList.toggle('active')
 
-const taskForm = document.querySelector('#taskForm')
-// console.log(document.getElementById('taskCreateBtn'));
-if (taskForm) {
-    document.getElementById('taskCreateBtn').addEventListener('click', function (event) {
-        event.preventDefault();
-
-        let tasks = CustomLocalStorage.read('tasks') || [];
-
-        const taskCreatedBy = currentUser.email;
-        const project = document.getElementById('project').value;
-        const title = document.getElementById('title').value;
-        const description = document.getElementById('description').value;
-        const priority = document.getElementById('priority').value;
-        const assign_to = document.getElementById('assign_to').value;
-        const due_date = document.getElementById('due_date').value;
-
-        const existingTask = tasks.find(task => task.title === title);
-
-        if (existingTask) {
-            alert('Task with same title already exists!');
-            return;
-        } else {
-            const newTasks = { taskCreatedBy, project, title, description, priority, assign_to, due_date };
-            tasks.push(newTasks);
-            CustomLocalStorage.create('tasks', tasks);
-            console.log('Tasks created successfully!');
-        }
-
-        document.getElementById('taskForm').reset();
-        window.location.reload();
-    });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('aside')) {
-        loadSidebar();
+            if (document.body.clientWidth > 1200) {
+                if (menuToggleButtonIcon.classList.contains('lni-chevron-left')) {
+                    menuToggleButtonIcon.classList.remove('lni-chevron-left')
+                    menuToggleButtonIcon.classList.add('lni-menu')
+                } else {
+                    menuToggleButtonIcon.classList.remove('lni-menu')
+                    menuToggleButtonIcon.classList.add('lni-chevron-left')
+                }
+            } else {
+                if (menuToggleButtonIcon.classList.contains('lni-chevron-left')) {
+                    menuToggleButtonIcon.classList.remove('lni-chevron-left')
+                    menuToggleButtonIcon.classList.add('lni-menu')
+                }
+            }
+        })
+        overlay.addEventListener('click', () => {
+            sidebarNavWrapper.classList.remove('active')
+            overlay.classList.remove('active')
+            mainWrapper.classList.remove('active')
+        })
     }
 
-    if (document.querySelector('header')) {
-        loadHeader({
-            'sessionUserName': currentUser.name,
-            'sessionUserRole': currentUser.role,
-            'sessionUserEmail': currentUser.email
+    // only shows role based sidebar nav items after login
+    Role.removeItemsFromSidebarBasedOnRole(currentUser.role);
+
+    const signUpForm = document.querySelector('#signUpForm')
+    if (signUpForm) {
+        document.getElementById('signUpForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const role = document.getElementById('role').value;
+            var password = document.getElementById('password').value;
+            var password = CryptoJS.AES.encrypt(password, 'secretKey').toString();
+
+            // Check if the "users" key exists in localStorage
+            let users = CustomLocalStorage.read('users') || [];
+            const existingUser = users.find(user => user.email === email);
+            if (existingUser) {
+                alert('User with this email already exists! Please use a different email.');
+                return;
+            }
+
+            const newUser = { name, email, password, role };
+            users.push(newUser);
+
+            CustomLocalStorage.create('users', users);
+            console.log('User registered successfully!');
+
+            document.getElementById('signUpForm').reset();
+            window.location.href = 'signin.html';
         });
     }
 
-    if (document.querySelector('footer')) {
-        loadFooter({
-            'developedBy': 'Admin Template'
+    const signInForm = document.querySelector('#signInForm')
+    if (signInForm) {
+        document.getElementById('signInForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            let users = CustomLocalStorage.read('users') || [];
+            const user = users.find(user => user.email === email);
+            const decryptedPassword = decryptPassword(user.password);
+
+            if (!user) {
+                alert('User not found! Please check your email.');
+                return;
+            }
+
+            if (decryptedPassword !== password) {
+                alert('Incorrect password! Please try again.');
+                return;
+            }
+
+            delete user.password;
+            CustomLocalStorage.create('session', user);
+
+            window.location.href = 'dashboard.html';
         });
     }
-});
+
+    const signOut = document.getElementById('signOutBtn')
+    if (signOut) {
+        signOut.addEventListener('click', (event) => {
+            event.preventDefault();
+            CustomLocalStorage.delete('session');
+            window.location.href = 'index.html';
+        })
+    }
+
+    const taskForm = document.querySelector('#taskForm')
+    // console.log(document.getElementById('taskCreateBtn'));
+    if (taskForm) {
+        document.getElementById('taskCreateBtn').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            let tasks = CustomLocalStorage.read('tasks') || [];
+
+            const taskCreatedBy = currentUser.email;
+            const project = document.getElementById('project').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const priority = document.getElementById('priority').value;
+            const assign_to = document.getElementById('assign_to').value;
+            const due_date = document.getElementById('due_date').value;
+
+            const existingTask = tasks.find(task => task.title === title);
+
+            if (existingTask) {
+                alert('Task with same title already exists!');
+                return;
+            } else {
+                const newTasks = { taskCreatedBy, project, title, description, priority, assign_to, due_date };
+                tasks.push(newTasks);
+                CustomLocalStorage.create('tasks', tasks);
+                console.log('Tasks created successfully!');
+            }
+
+            document.getElementById('taskForm').reset();
+            window.location.reload();
+        });
+    }
+}
+

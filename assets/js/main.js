@@ -1,13 +1,4 @@
 (function () {
-  /* ========= Preloader ======== */
-  const preloader = document.querySelectorAll('#preloader')
-
-  window.addEventListener('load', function () {
-    if (preloader.length) {
-      this.document.getElementById('preloader').style.display = 'none'
-    }
-  })
-
   /* ========= Add Box Shadow in Header on Scroll ======== */
   window.addEventListener('scroll', function () {
     const header = document.querySelector('.header')
@@ -20,40 +11,14 @@
     }
   })
 
-  /* ========= sidebar toggle ======== */
-  const sidebarNavWrapper = document.querySelector('.sidebar-nav-wrapper')
-  const mainWrapper = document.querySelector('.main-wrapper')
-  const menuToggleButton = document.querySelector('#menu-toggle')
-  const menuToggleButtonIcon = document.querySelector('#menu-toggle i')
-  const overlay = document.querySelector('.overlay')
+  /* ========= Preloader ======== */
+  const preloader = document.querySelectorAll('#preloader')
 
-  if (menuToggleButton) {
-    menuToggleButton.addEventListener('click', () => {
-      sidebarNavWrapper.classList.toggle('active')
-      overlay.classList.add('active')
-      mainWrapper.classList.toggle('active')
-
-      if (document.body.clientWidth > 1200) {
-        if (menuToggleButtonIcon.classList.contains('lni-chevron-left')) {
-          menuToggleButtonIcon.classList.remove('lni-chevron-left')
-          menuToggleButtonIcon.classList.add('lni-menu')
-        } else {
-          menuToggleButtonIcon.classList.remove('lni-menu')
-          menuToggleButtonIcon.classList.add('lni-chevron-left')
-        }
-      } else {
-        if (menuToggleButtonIcon.classList.contains('lni-chevron-left')) {
-          menuToggleButtonIcon.classList.remove('lni-chevron-left')
-          menuToggleButtonIcon.classList.add('lni-menu')
-        }
-      }
-    })
-    overlay.addEventListener('click', () => {
-      sidebarNavWrapper.classList.remove('active')
-      overlay.classList.remove('active')
-      mainWrapper.classList.remove('active')
-    })
-  }
+  window.addEventListener('load', function () {
+    if (preloader.length) {
+      this.document.getElementById('preloader').style.display = 'none'
+    }
+  })
 
   // ========== theme switcher ==========
   const optionButton = document.querySelector('.option-btn')
@@ -61,15 +26,21 @@
   const optionBox = document.querySelector('.option-box')
   const optionOverlay = document.querySelector('.option-overlay')
 
-  if (optionButton || optionButtonClose || optionBox || optionOverlay) {
+  if (optionButton && optionBox && optionOverlay) {
     optionButton.addEventListener('click', () => {
       optionBox.classList.add('show')
       optionOverlay.classList.add('show')
     })
+  }
+
+  if (optionButtonClose && optionBox && optionOverlay) {
     optionButtonClose.addEventListener('click', () => {
       optionBox.classList.remove('show')
       optionOverlay.classList.remove('show')
     })
+  }
+
+  if (optionOverlay && optionBox) {
     optionOverlay.addEventListener('click', () => {
       optionOverlay.classList.remove('show')
       optionBox.classList.remove('show')
@@ -150,34 +121,18 @@
   )
 })();
 
-// dynamic header and footer loading
-function loadSidebar(newContent) {
-  fetch('components/sidebar.html')
-    .then(response => response.text())
-    .then(html => {
-      document.querySelector('aside').innerHTML = html;
-      if (newContent) {
-        for (let className in newContent) {
-          if (newContent.hasOwnProperty(className)) {
-            const content = newContent[className];
-            const elements = document.getElementsByClassName(className);
-            for (let i = 0; i < elements.length; i++) {
-              elements[i].textContent = content;
-            }
-          }
-        }
-      }
-    })
-    .catch(error => {
-      console.error('Error loading sidebar:', error);
-    });
-}
+// load components html files from component folder
+function loadComponent(component, targetSelector, newContent) {
+  const targetElement = document.querySelector(targetSelector);
+  if (!targetElement) {
+    console.error(`Error loading ${component}: Target element '${targetSelector}' not found.`);
+    return;
+  }
 
-function loadHeader(newContent) {
-  fetch('components/header.html')
+  fetch(`components/${component}.html`)
     .then(response => response.text())
     .then(html => {
-      document.querySelector('header').innerHTML = html;
+      targetElement.innerHTML = html;
       if (newContent) {
         for (let className in newContent) {
           if (newContent.hasOwnProperty(className)) {
@@ -191,28 +146,6 @@ function loadHeader(newContent) {
       }
     })
     .catch(error => {
-      console.error('Error loading header:', error);
-    });
-}
-
-function loadFooter(newContent) {
-  fetch('components/footer.html')
-    .then(response => response.text())
-    .then(html => {
-      document.querySelector('footer').innerHTML = html;
-      if (newContent) {
-        for (let className in newContent) {
-          if (newContent.hasOwnProperty(className)) {
-            const content = newContent[className];
-            const elements = document.getElementsByClassName(className);
-            for (let i = 0; i < elements.length; i++) {
-              elements[i].textContent = content;
-            }
-          }
-        }
-      }
-    })
-    .catch(error => {
-      console.error('Error loading header:', error);
+      console.error(`Error loading ${component}:`, error);
     });
 }

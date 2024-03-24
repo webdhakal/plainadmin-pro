@@ -3,7 +3,6 @@ const gulp = require("gulp");
 const { src, dest, watch, series } = require("gulp");
 
 const sass = require("gulp-sass")(require("sass"));
-const { authEndpoints } = require('../../config/authConfig.js');
 
 const browserSync = require("browser-sync").create();
 
@@ -31,7 +30,7 @@ function browserSyncReload(cb) {
 
 // Watch Task
 function watchTask() {
-  watch(["*.html", "./assets/js/**/*.js"], browserSyncReload);
+  watch(["**/*.html", "*.html", "./assets/js/**/*.js"], browserSyncReload);
   watch(["./assets/scss/**/*.scss"], series(scssTask, browserSyncReload));
 }
 

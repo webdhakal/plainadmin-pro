@@ -311,6 +311,42 @@
   }
 }
 
+.no-wrapper{
+  .footer {
+    padding: 15px 0;
+    justify-items: flex-end;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    .copyright {
+      p {
+        a {
+          color: inherit;
+
+          &:hover {
+            color: $primary;
+          }
+        }
+      }
+    }
+
+    .terms {
+      @media #{$xs} {
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      a {
+        color: $gray;
+
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+  }
+}
 .promo-box {
   background: #F5F8FC;
   padding: 15px 18px;
