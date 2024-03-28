@@ -98,10 +98,25 @@
           <div class="row">
             <div class="col-md-6 col-lg-4">
               <div class="kanban-card-wrapper">
-                <h3 class="card-wrapper-title">TODO (3)</h3>
+                <h3 class="card-wrapper-title">TODO (<span id="total-todo">0</span>)</h3>
 
-                <div class="kanban-card-list">
-                  <div class="kanban-card-item" draggable="true">
+                <div class="kanban-card-list list-todo">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="kanban-card-wrapper">
+                <h3 class="card-wrapper-title">IN PROGRESS (<span id="total-progress">0</span>)</h3>
+
+                <div class="kanban-card-list list-progress">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="kanban-card-wrapper">
+                <h3 class="card-wrapper-title">Done (<span id="total-done">0</span>)</h3>
+                <div class="kanban-card-list list-done">
+                  <!-- <div class="kanban-card-item" draggable="true">
                     <div class="kanban-card high">
                       <button class="bg-transparent border-0 kanban-button" type="button" data-bs-toggle="modal"
                         data-bs-target="#taskDetailsModal">
@@ -166,355 +181,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div class="kanban-card-item" draggable="true">
-                    <div class="kanban-card low">
-                      <button class="bg-transparent border-0 kanban-button" type="button" data-bs-toggle="modal"
-                        data-bs-target="#taskDetailsModal">
-                        <div class="kanban-card-header">
-                          <span class="priority">High</span>
-                          <span class="tooltip-icon text-gray" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Task">
-                            <i class="lni lni-empty-file"></i>
-                          </span>
-                        </div>
-                        <h4>Add components to site</h4>
-                        <div class="d-flex gap-3 kanban-meta">
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-alarm-clock"></i>
-                            </span>
-                            22 Jun, 2025
-                          </p>
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-comments-alt"></i>
-                            </span>
-                            58 Comments
-                          </p>
-                        </div>
-                      </button>
-
-                      <div class="kanban-card-footer d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                          <div class="image me-2">
-                            <img src="assets/images/kanban/members/member-1.png" alt="kanban image" width="25"
-                              height="25" class="rounded-circle" />
-                          </div>
-                          <p class="text-sm text-gray">Sean White</p>
-                        </div>
-                        <div>
-                          <div class="more-btn-wrapper">
-                            <button class="more-btn dropdown-toggle border-0 bg-transparent" id="moreAction"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="lni lni-more-alt"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end px-1" aria-labelledby="moreAction">
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-pencil-alt me-1"></i> Edit
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-trash-can me-1"></i>
-                                  Delete
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-circle-plus me-1"></i>
-                                  Add People
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="kanban-card-item" draggable="true">
-                    <div class="kanban-card medium">
-                      <button class="bg-transparent border-0 kanban-button" type="button" data-bs-toggle="modal"
-                        data-bs-target="#taskDetailsModal">
-                        <div class="kanban-card-header">
-                          <span class="priority">High</span>
-                          <span class="tooltip-icon text-gray" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Task">
-                            <i class="lni lni-empty-file"></i>
-                          </span>
-                        </div>
-                        <h4>Add components to site</h4>
-                        <div class="d-flex gap-3 kanban-meta">
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-alarm-clock"></i>
-                            </span>
-                            22 Jun, 2025
-                          </p>
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-comments-alt"></i>
-                            </span>
-                            58 Comments
-                          </p>
-                        </div>
-                      </button>
-
-                      <div class="kanban-card-footer d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                          <div class="image me-2">
-                            <img src="assets/images/kanban/members/member-1.png" alt="kanban image" width="25"
-                              height="25" class="rounded-circle" />
-                          </div>
-                          <p class="text-sm text-gray">Sean White</p>
-                        </div>
-                        <div>
-                          <div class="more-btn-wrapper">
-                            <button class="more-btn dropdown-toggle border-0 bg-transparent" id="moreAction"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="lni lni-more-alt"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end px-1" aria-labelledby="moreAction">
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-pencil-alt me-1"></i> Edit
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-trash-can me-1"></i>
-                                  Delete
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-circle-plus me-1"></i>
-                                  Add People
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-              <div class="kanban-card-wrapper">
-                <h3 class="card-wrapper-title">IN PROGRESS (2)</h3>
-
-                <div class="kanban-card-list">
-                  <div class="kanban-card-item" draggable="true">
-                    <div class="kanban-card low">
-                      <button class="bg-transparent border-0 kanban-button" type="button" data-bs-toggle="modal"
-                        data-bs-target="#taskDetailsModal">
-                        <div class="kanban-card-header">
-                          <span class="priority">High</span>
-                          <span class="tooltip-icon text-gray" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Task">
-                            <i class="lni lni-empty-file"></i>
-                          </span>
-                        </div>
-                        <h4>Add components to site</h4>
-                        <div class="d-flex gap-3 kanban-meta">
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-alarm-clock"></i>
-                            </span>
-                            22 Jun, 2025
-                          </p>
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-comments-alt"></i>
-                            </span>
-                            58 Comments
-                          </p>
-                        </div>
-                      </button>
-
-                      <div class="kanban-card-footer d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                          <div class="image me-2">
-                            <img src="assets/images/kanban/members/member-1.png" alt="kanban image" width="25"
-                              height="25" class="rounded-circle" />
-                          </div>
-                          <p class="text-sm text-gray">Sean White</p>
-                        </div>
-                        <div>
-                          <div class="more-btn-wrapper">
-                            <button class="more-btn dropdown-toggle border-0 bg-transparent" id="moreAction"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="lni lni-more-alt"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end px-1" aria-labelledby="moreAction">
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-pencil-alt me-1"></i> Edit
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-trash-can me-1"></i>
-                                  Delete
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-circle-plus me-1"></i>
-                                  Add People
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="kanban-card-item" draggable="true">
-                    <div class="kanban-card medium">
-                      <button class="bg-transparent border-0 kanban-button" type="button" data-bs-toggle="modal"
-                        data-bs-target="#taskDetailsModal">
-                        <div class="kanban-card-header">
-                          <span class="priority">High</span>
-                          <span class="tooltip-icon text-gray" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Task">
-                            <i class="lni lni-empty-file"></i>
-                          </span>
-                        </div>
-                        <h4>Add components to site</h4>
-                        <div class="d-flex gap-3 kanban-meta">
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-alarm-clock"></i>
-                            </span>
-                            22 Jun, 2025
-                          </p>
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-comments-alt"></i>
-                            </span>
-                            58 Comments
-                          </p>
-                        </div>
-                      </button>
-
-                      <div class="kanban-card-footer d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                          <div class="image me-2">
-                            <img src="assets/images/kanban/members/member-1.png" alt="kanban image" width="25"
-                              height="25" class="rounded-circle" />
-                          </div>
-                          <p class="text-sm text-gray">Sean White</p>
-                        </div>
-                        <div>
-                          <div class="more-btn-wrapper">
-                            <button class="more-btn dropdown-toggle border-0 bg-transparent" id="moreAction"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="lni lni-more-alt"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end px-1" aria-labelledby="moreAction">
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-pencil-alt me-1"></i> Edit
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-trash-can me-1"></i>
-                                  Delete
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-circle-plus me-1"></i>
-                                  Add People
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-              <div class="kanban-card-wrapper">
-                <h3 class="card-wrapper-title">Done (1)</h3>
-                <div class="kanban-card-list">
-                  <div class="kanban-card-item" draggable="true">
-                    <div class="kanban-card high">
-                      <button class="bg-transparent border-0 kanban-button" type="button" data-bs-toggle="modal"
-                        data-bs-target="#taskDetailsModal">
-                        <div class="kanban-card-header">
-                          <span class="priority">High</span>
-                          <span class="tooltip-icon text-gray" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Task">
-                            <i class="lni lni-empty-file"></i>
-                          </span>
-                        </div>
-                        <h4>Add components to site</h4>
-                        <div class="d-flex gap-3 kanban-meta">
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-alarm-clock"></i>
-                            </span>
-                            22 Jun, 2025
-                          </p>
-                          <p class="d-flex align-items-center text-sm text-gray">
-                            <span class="pe-1">
-                              <i class="lni lni-comments-alt"></i>
-                            </span>
-                            58 Comments
-                          </p>
-                        </div>
-                      </button>
-
-                      <div class="kanban-card-footer d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                          <div class="image me-2">
-                            <img src="assets/images/kanban/members/member-1.png" alt="kanban image" width="25"
-                              height="25" class="rounded-circle" />
-                          </div>
-                          <p class="text-sm text-gray">Sean White</p>
-                        </div>
-                        <div>
-                          <div class="more-btn-wrapper">
-                            <button class="more-btn dropdown-toggle border-0 bg-transparent" id="moreAction"
-                              data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="lni lni-more-alt"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end px-1" aria-labelledby="moreAction">
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-pencil-alt me-1"></i> Edit
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-trash-can me-1"></i>
-                                  Delete
-                                </a>
-                              </li>
-                              <li class="dropdown-item">
-                                <a href="#0" class="text-gray text-sm">
-                                  <i class="lni lni-circle-plus me-1"></i>
-                                  Add People
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -583,9 +250,9 @@
                     <div class="select-position">
                       <select class="light-bg" id="priority">
                         <option value="">Select Priority</option>
-                        <option value="">Low</option>
-                        <option value="">Medium</option>
-                        <option value="">High</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
                       </select>
                     </div>
                   </div>
@@ -743,51 +410,6 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/auth.js"></script>
 
-  <script>
-    const kanbanCardItems = document.querySelectorAll(".kanban-card-item");
-    const kanbanCardWrappers = document.querySelectorAll(".kanban-card-list");
-    let dragItem = null;
-
-    kanbanCardItems.forEach((item) => {
-      item.addEventListener("dragstart", dragStart);
-      item.addEventListener("dragend", dragEnd);
-    });
-
-    function dragStart() {
-      console.log("drag started");
-      dragItem = this;
-      setTimeout(() => (this.className = "invisible"), 0);
-    }
-
-    function dragEnd() {
-      console.log("drag ended");
-      this.className = "kanban-card-item";
-      dragItem = null;
-    }
-
-    kanbanCardWrappers.forEach((kanbanCardWrapper) => {
-      new Sortable(kanbanCardWrapper, {
-        group: "shared",
-        animation: 150,
-        ghostClass: "blue-background-class",
-      });
-    });
-
-    function dragOver(e) {
-      e.preventDefault();
-      console.log("drag over");
-    }
-    function dragEnter() {
-      console.log("drag entered");
-    }
-    function dragLeave() {
-      console.log("drag left");
-    }
-    function dragDrop() {
-      console.log("drag dropped");
-      this.append(dragItem);
-    }
-  </script>
 </body>
 
 </html>

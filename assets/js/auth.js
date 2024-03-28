@@ -34,16 +34,17 @@ class CustomLocalStorage {
 
 
 class Middleware {
-    static authEndpoints = ['dashboard.html', 'profile.html'];
+    static authEndpoints = ['index.html', 'profile.html', 'task.html', 'projects.html'];
+    static unauthenticatedRedirect = 'signin.html';
 
     static redirectIfNotAuthenticate() {
         const session = CustomLocalStorage.read('session');
         const currentURL = window.location.href;
-        let endpoint = currentURL.split("/").pop();
+        const endpoint = currentURL.split("/").pop();
 
         if (session.length === 0) {
             if (this.authEndpoints.includes(endpoint)) {
-                window.location.href = 'signin.html';
+                window.location.href = this.unauthenticatedRedirect;
             }
         }
     }
@@ -78,25 +79,25 @@ const currentUser = CustomLocalStorage.read('session');
 
 window.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('aside')) {
-        loadComponent('sidebar', 'aside');
+        loadPartial('components', 'sidebar.html', 'aside');
     }
 
     if (document.querySelector('header')) {
         var headerNewContent = {
-            'sessionUserName': currentUser.name,
-            'sessionUserRole': currentUser.role,
-            'sessionUserEmail': currentUser.email
+            '.sessionUserName': currentUser.name,
+            '.sessionUserRole': currentUser.role,
+            '.sessionUserEmail': currentUser.email
         }
 
-        loadComponent('header', 'header', headerNewContent);
+        loadPartial('components', 'header.html', 'header', headerNewContent);
     }
 
     if (document.querySelector('footer')) {
         var footerNewContent = {
-            'developedBy': 'Plain Admin'
+            '.developedBy': 'Plain Admin'
         }
 
-        loadComponent('footer', 'footer', footerNewContent);
+        loadPartial('components', 'footer.html', 'footer', footerNewContent);
     }
 
 });
@@ -205,7 +206,7 @@ window.onload = function () {
             delete user.password;
             CustomLocalStorage.create('session', user);
 
-            window.location.href = 'dashboard.html';
+            window.location.href = 'index.html';
         });
     }
 
@@ -233,6 +234,8 @@ window.onload = function () {
             const priority = document.getElementById('priority').value;
             const assign_to = document.getElementById('assign_to').value;
             const due_date = document.getElementById('due_date').value;
+            const tid = tasks.length + 1;
+            const stage = 'todo';
 
             const existingTask = tasks.find(task => task.title === title);
 
@@ -240,7 +243,7 @@ window.onload = function () {
                 alert('Task with same title already exists!');
                 return;
             } else {
-                const newTasks = { taskCreatedBy, project, title, description, priority, assign_to, due_date };
+                const newTasks = { tid, stage, taskCreatedBy, project, title, description, priority, assign_to, due_date };
                 tasks.push(newTasks);
                 CustomLocalStorage.create('tasks', tasks);
                 console.log('Tasks created successfully!');
@@ -250,5 +253,30 @@ window.onload = function () {
             window.location.reload();
         });
     }
+
+    // listing user based tasks
+    if (document.querySelector('.kanban-cards-section')) {
+        const tasks = CustomLocalStorage.read('tasks');
+
+        count = tasks.length + 1;
+        const filteredTasks = tasks.filter(task => task.taskCreatedBy === currentUser.email).sort((a, b) => b.tid - a.tid);
+
+        if (tasks.length > 0) {
+            document.getElementById('total-todo').innerText = filteredTasks.filter(task => task.stage === 'todo').length;
+            document.getElementById('total-progress').innerText = filteredTasks.filter(task => task.stage === 'progress').length;
+            document.getElementById('total-done').innerText = filteredTasks.filter(task => task.stage === 'done').length;
+
+            filteredTasks.forEach(task => {
+                var stage = task.stage;
+
+                var taskContent = {
+                    '.taskTitle': task.title
+                };
+
+                loadPartial('sections', 'single-task-card.html', `.kanban-card-list.list-${stage}`, taskContent, appendable = true);
+            });
+        }
+    }
+
 }
 

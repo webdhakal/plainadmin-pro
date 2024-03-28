@@ -122,24 +122,40 @@
 })();
 
 // load components html files from component folder
-function loadComponent(component, targetSelector, newContent) {
+function loadPartial(path, component, targetSelector, newContent, appendable = false) {
   const targetElement = document.querySelector(targetSelector);
+
   if (!targetElement) {
     console.error(`Error loading ${component}: Target element '${targetSelector}' not found.`);
     return;
   }
-
-  fetch(`components/${component}.html`)
+  //.kanban-card-item:last-child
+  fetch(`${path}/${component}`)
     .then(response => response.text())
     .then(html => {
-      targetElement.innerHTML = html;
+      if (appendable) {
+        targetElement.insertAdjacentHTML('beforeend', html);
+        var targetContentElement = document.querySelector(targetSelector + ' .kanban-card-item:last-child');
+      } else {
+        targetElement.innerHTML = html;
+      }
+
       if (newContent) {
         for (let className in newContent) {
           if (newContent.hasOwnProperty(className)) {
             const content = newContent[className];
-            const elements = document.getElementsByClassName(className);
-            for (let i = 0; i < elements.length; i++) {
-              elements[i].textContent = content;
+            const elements = appendable ? targetContentElement.querySelectorAll(className) : targetElement.querySelectorAll(className);
+
+            if (appendable) {
+              for (let i = 0; i < elements.length; i++) {
+                elements[i].innerHTML = content;
+              }
+            }
+
+            if (!appendable) {
+              for (let i = 0; i < elements.length; i++) {
+                elements[i].textContent = content;
+              }
             }
           }
         }
@@ -148,4 +164,5 @@ function loadComponent(component, targetSelector, newContent) {
     .catch(error => {
       console.error(`Error loading ${component}:`, error);
     });
+
 }
